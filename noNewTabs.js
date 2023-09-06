@@ -1,5 +1,7 @@
 (function () {
   // Function to remove target attribute from links
+  let overridesCount = 0;
+
   const linkMatches = [
     `a[target*="etsy"]`,
     `a[target="_blank"]:not([href^="/social"])`,
@@ -23,6 +25,18 @@
         removeTargetAttributes();
       }
     });
+
+    const overridesDOM = document.querySelectorAll(
+      "[data-etsy-target-override]"
+    );
+    const isSameValues = overridesCount == overridesDOM.length;
+
+    if (isSameValues) {
+      return;
+    }
+
+    overridesCount = overridesDOM.length;
+    console.debug(`[Betsy debug] Overrided ${overridesCount} links`);
   });
 
   observer.observe(document.body, { childList: true, subtree: true });
