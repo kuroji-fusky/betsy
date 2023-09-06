@@ -4,7 +4,7 @@
 
   const linkMatches = [
     `a[target*="etsy"]`,
-    `a[target="_blank"]:not([href^="/social"])`,
+    `a[target="_blank"]:not([href^="/social"], [href^="https://play.google.com"], [href^="https://apps.apple.com"])`,
   ];
 
   const removeTargetAttributes = () => {
