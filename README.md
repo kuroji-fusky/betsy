@@ -8,5 +8,5 @@ The Better Etsy browser extension for extended functionality when browsing Etsy
 - **[SOON]** Add a dark theme, inspired by the Dark Reader extension
 - **[SOON]** Expand all collapsible listing details (i.e. expands the sections "Description", "Meet your sellers", etc.)
 - **[SOON]** Override default currency setting set
-- **[SOON]** Hide explicit listings
+- **[SOON]** Auto-redirect sold out listings
 - **[SOON]** Remove tracking (off by default)
