@@ -1,9 +1,26 @@
+const consoleHeaderBg = (c) =>
+  `background-color:${c};color:#f5f5f5;padding:2px 3px;border-radius:4px;font-weight:bold`
+
+/**
+ * @param {any[]} i
+ * @returns
+ */
+const betsyFeatures = (...i) =>
+  console.debug(
+    `%c[🔧 BEtsy Features]%c ${i}`,
+    consoleHeaderBg("#166292"),
+    "color:currentColor"
+  )
 /**
  * @param {any[]} i
  * @returns
  */
 const betsyDebug = (...i) =>
-  console.debug(`[BEtsy debug] ${i.length < 1 ? i.join(" ") : i.join("")}`)
+  console.debug(
+    `%c[🐞 BEtsy Debug]%c ${i}`,
+    consoleHeaderBg("#f1641e"),
+    "color:currentColor"
+  )
 
 const $body = document.body
 /**
@@ -30,15 +47,22 @@ const coerceToString = (input) => {
   return input
 }
 
+betsyFeatures("Version 1.0.0; created by kuroji-fusky")
+
 /**
- * Removes the `target="_blank"` attribute from links that causes to open link to a new tab
+ * ======================================================================================================================
+ * @name noNewTabs
+ * @description Removes the `target="_blank"` attribute from links that causes to open link to a new tab
+ * ======================================================================================================================
  */
-export const noNewTab = () => {
+const noNewTabs = () => {
+  betsyFeatures("noNewTabs() init")
+
   let overridesCount = 0
 
   const linkMatches = [
     `a[target*="etsy"]`,
-    `a[target="_blank"]:not([href^="/social"], [href^="https://play.google.com"], [href^="https://apps.apple.com"])`,
+    `a[href^="https://www.etsy.com/"][target="_blank"]:not([href^="/social"], [href^="https://play.google.com"], [href^="https://apps.apple.com"])`,
   ]
 
   const removeTargetAttributes = () => {
@@ -69,7 +93,7 @@ export const noNewTab = () => {
     const overridesDOM = _$$("[data-etsy-target-override]")
     const overrideDOMLen = overridesDOM.length
 
-    if (overridesCount == overridesDOM.length) {
+    if (overridesCount == overrideDOMLen) {
       return
     }
 
@@ -95,7 +119,9 @@ export const noNewTab = () => {
     // prettier-ignore
     const lsLinkOverriden = JSON.parse(lsGetItem || JSON.stringify(betsyInit)).links_overriden;
 
-    betsyDebug(`Overrided ${overridesCount} links, ${lsLinkOverriden} in total`)
+    betsyDebug(
+      `noNewTabs: stripped ${overridesCount} links, ${lsLinkOverriden} in total`
+    )
   })
 
   observer.observe(document.body, { childList: true, subtree: true })
@@ -104,9 +130,14 @@ export const noNewTab = () => {
 }
 
 /**
- * Automatically expand listing details (i.e. expands the sections "Description", "Meet your sellers", etc.)
+ * ======================================================================================================================
+ * @name expandListingDetails
+ * @description Automatically expand listing details (i.e. expands the sections "Description", "Meet your sellers", etc.)
+ * ======================================================================================================================
  */
-export const expandListingDetails = () => {
+const expandListingDetails = () => {
+  betsyFeatures("expandListingDetails() init")
+
   const ListingInfoComponent = _$(".listing-info")
 
   if (!!ListingInfoComponent) {
@@ -117,11 +148,16 @@ export const expandListingDetails = () => {
 }
 
 /**
- * Makes the header "stick" to the window
+ * ======================================================================================================================
+ * @name stickyHeader
+ * @description Makes the header "stick" to the window
+ * ======================================================================================================================
  */
-export const stickyHeader = () => {
+const stickyHeader = () => {
+  betsyFeatures("stickyHeader() init")
+
   const etsyHeader = _$("#gnav-header")
-  const domObserver = document.createElement("dom-observer")
+  const domObserver = document.createElement("betsy-dom-observer")
 
   // Fix horizontal scroll when user visits the Settings page
   $body.style["overflow-x"] = "hidden"
@@ -160,11 +196,15 @@ export const stickyHeader = () => {
 
   $body.insertBefore(domObserver, etsyHeader)
 }
-
 /**
- * Removes reference and click tracking by omitting ref and click queries
+ * ======================================================================================================================
+ * @name removeTracking
+ * @description Removes reference and click tracking by omitting ref and click queries
+ * ======================================================================================================================
  */
-export const removeTracking = () => {
+const removeTracking = () => {
+  betsyFeatures("removeTracking() init")
+
   const anchorTags = _$$("a")
 
   const mutatedQuery = Array.from(anchorTags).map((links) => {
