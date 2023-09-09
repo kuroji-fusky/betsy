@@ -1,23 +1,23 @@
 const consoleHeaderBg = (c) =>
-  `background-color:${c};color:#f5f5f5;padding:2px 3px;border-radius:4px;font-weight:bold`
+  `background-color:${c};color:#f5f5f5;padding:2px 5px;border-radius:4px;font-weight:bold`
 
 /**
  * @param {any[]} i
- * @returns
+ * @returns {void}
  */
 const betsyFeatures = (...i) =>
   console.debug(
-    `%c[🔧 BEtsy Features]%c ${i}`,
+    `%c🔧 BEtsy Features%c ${i}`,
     consoleHeaderBg("#166292"),
     "color:currentColor"
   )
 /**
  * @param {any[]} i
- * @returns
+ * @returns {void}
  */
 const betsyDebug = (...i) =>
   console.debug(
-    `%c[🐞 BEtsy Debug]%c ${i}`,
+    `%c🐞 BEtsy Debug%c ${i}`,
     consoleHeaderBg("#f1641e"),
     "color:currentColor"
   )
@@ -26,7 +26,7 @@ const $body = document.body
 /**
  * @param {keyof HTMLElementTagNameMap | string} element
  * @param {any} target
- * @returns {HTMLElement}
+ * @returns {Element}
  */
 const _$ = (element, target = document) => target.querySelector(element)
 /**
@@ -47,7 +47,15 @@ const coerceToString = (input) => {
   return input
 }
 
-betsyFeatures("Version 1.0.0; created by kuroji-fusky")
+const _BETSY_INIT =
+  "If there are any bugs or features you'd like to add, create a new issue on GitHub!"
+
+console.info(
+  `%c✂️ BEtsy%c ${_BETSY_INIT}`,
+  consoleHeaderBg("#af54ed"),
+  "color:currentColor",
+  "https://github.com/kuroji-fusky/betsy/issues"
+)
 
 /**
  * ======================================================================================================================
@@ -117,36 +125,17 @@ const noNewTabs = () => {
     }
 
     // prettier-ignore
-    const lsLinkOverriden = JSON.parse(lsGetItem || JSON.stringify(betsyInit)).links_overriden;
+    const lsLinkOverriden = JSON.parse(lsGetItem || JSON.stringify(betsyInit)).links_overriden
 
     betsyDebug(
       `noNewTabs: stripped ${overridesCount} links, ${lsLinkOverriden} in total`
     )
   })
 
-  observer.observe(document.body, { childList: true, subtree: true })
+  observer.observe($body, { childList: true, subtree: true })
 
   removeTargetAttributes()
 }
-
-/**
- * ======================================================================================================================
- * @name expandListingDetails
- * @description Automatically expand listing details (i.e. expands the sections "Description", "Meet your sellers", etc.)
- * ======================================================================================================================
- */
-const expandListingDetails = () => {
-  betsyFeatures("expandListingDetails() init")
-
-  const ListingInfoComponent = _$(".listing-info")
-
-  if (!!ListingInfoComponent) {
-    console.log(_$$("[data-appears-component-name]", ListingInfoComponent))
-  } else {
-    console.log("Listing element not found")
-  }
-}
-
 /**
  * ======================================================================================================================
  * @name stickyHeader
@@ -195,6 +184,54 @@ const stickyHeader = () => {
   io.observe(domObserver)
 
   $body.insertBefore(domObserver, etsyHeader)
+}
+/**
+ * ======================================================================================================================
+ * @name expandListingDetails
+ * @description Automatically expand listing details (i.e. expands the sections "Description", "Meet your sellers", etc.)
+ * ======================================================================================================================
+ */
+// TODO extract this code and add functionality for user reviews as well
+const expandListingDetails = () => {
+  betsyFeatures("expandListingDetails() init")
+
+  const ListingInfoComponent = _$(".listing-info")
+
+  if (!ListingInfoComponent) {
+    betsyDebug("expandListingDetails: Listing element not found")
+    return
+  }
+
+  const sections = _$$("[data-appears-component-name]", ListingInfoComponent)
+
+  sections.forEach((section) => {
+    const appearsComponentName = section.dataset.appearsComponentName
+
+    const sectionsByAria = _$$(
+      'div[aria-hidden="true"]:not([data-favorite-shops-removed-alert], [data-favorite-shops-alert])',
+      section
+    )
+    const sectionsByButton = _$$("button", section)
+
+    const isDescriptionExpanded =
+      appearsComponentName == "listing_description" && sectionsByAria.length > 0
+
+    if (sectionsByAria.length == 0) {
+      betsyDebug(
+        `expandListingDetails: ${appearsComponentName} is already expanded`
+      )
+      return
+    }
+
+    if (isDescriptionExpanded) {
+      const readMoreButton = _$("button[data-read-more]", section)
+
+      readMoreButton.click()
+      betsyDebug(
+        `expandListingDetails: ${appearsComponentName} has been expanded (⚡ click event called)`
+      )
+    }
+  })
 }
 /**
  * ======================================================================================================================
