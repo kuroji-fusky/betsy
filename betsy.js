@@ -1,6 +1,16 @@
 const consoleHeaderBg = (c) =>
   `background-color:${c};color:#f5f5f5;padding:2px 5px;border-radius:4px;font-weight:bold`
 
+const _BETSY_INIT_MSG =
+  "If there are any bugs or features you'd like to add, create a new issue on GitHub!"
+
+console.info(
+  `%c✂️ BEtsy%c ${_BETSY_INIT_MSG}`,
+  consoleHeaderBg("#af54ed"),
+  "color:currentColor",
+  "https://github.com/kuroji-fusky/betsy/issues"
+)
+
 /**
  * @param {any[]} i
  * @returns {void}
@@ -35,7 +45,6 @@ const _$ = (element, target = document) => target.querySelector(element)
  * @returns {NodeListOf<Element>}
  */
 const _$$ = (element, target = document) => target.querySelectorAll(element)
-
 /**
  * Forces any input type to string
  * @param {any} input
@@ -46,16 +55,28 @@ const coerceToString = (input) => {
   if (typeof input === "object") return JSON.stringify(input)
   return input
 }
+/**
+ * Append inline styles to an element
+ * @param {Element} target
+ * @param {CSSStyleDeclaration} styles
+ * @returns {void}
+ */
+const appendInlineStyles = (target, styles) => {
+  return Object.entries(styles).forEach(([styleKey, styleValue]) => {
+    target.style[styleKey] = styleValue
+  })
+}
 
-const _BETSY_INIT =
-  "If there are any bugs or features you'd like to add, create a new issue on GitHub!"
-
-console.info(
-  `%c✂️ BEtsy%c ${_BETSY_INIT}`,
-  consoleHeaderBg("#af54ed"),
-  "color:currentColor",
-  "https://github.com/kuroji-fusky/betsy/issues"
-)
+/**
+ * ======================================================================================================================
+ * Fixes horizontal scroll when visiting account settings
+ * ======================================================================================================================
+ */
+appendInlineStyles($body, {
+  "overflow-x": "hidden",
+  position: "relative",
+  left: 0,
+})
 
 /**
  * ======================================================================================================================
@@ -148,20 +169,10 @@ const stickyHeader = () => {
   const etsyHeader = _$("#gnav-header")
   const domObserver = document.createElement("betsy-dom-observer")
 
-  // Fix horizontal scroll when user visits the Settings page
-  $body.style["overflow-x"] = "hidden"
-
   const etsyHeaderStyleOverrides = {
     position: "sticky",
     top: "0",
     transition: "box-shadow ease 300ms",
-  }
-
-  const observerStyles = {
-    position: "absolute",
-    top: 0,
-    left: 0,
-    height: "40px",
   }
 
   etsyHeader.setAttribute(
@@ -171,8 +182,10 @@ const stickyHeader = () => {
       .join("; ")
   )
 
-  Object.entries(observerStyles).forEach(([sk, sv]) => {
-    domObserver.style[sk] = sv
+  appendInlineStyles(domObserver, {
+    position: "absolute",
+    top: 0,
+    height: "40px",
   })
 
   const io = new IntersectionObserver(([entry]) => {
@@ -189,29 +202,28 @@ const stickyHeader = () => {
  * ======================================================================================================================
  * @name expandListingDetails
  * @description Automatically expand listing details (i.e. expands the sections "Description", "Meet your sellers", etc.)
+ * TODO extract this code and add functionality for user reviews as well
  * ======================================================================================================================
  */
-// TODO extract this code and add functionality for user reviews as well
 const expandListingDetails = () => {
   betsyFeatures("expandListingDetails() init")
 
-  const ListingInfoComponent = _$(".listing-info")
+  const listingInfo = _$(".listing-info")
 
-  if (!ListingInfoComponent) {
+  if (!listingInfo) {
     betsyDebug("expandListingDetails: Listing element not found")
     return
   }
 
-  const sections = _$$("[data-appears-component-name]", ListingInfoComponent)
+  const listingSections = _$$("[data-appears-component-name]", listingInfo)
 
-  sections.forEach((section) => {
+  listingSections.forEach((section) => {
     const appearsComponentName = section.dataset.appearsComponentName
 
     const sectionsByAria = _$$(
       'div[aria-hidden="true"]:not([data-favorite-shops-removed-alert], [data-favorite-shops-alert])',
       section
     )
-    const sectionsByButton = _$$("button", section)
 
     const isDescriptionExpanded =
       appearsComponentName == "listing_description" && sectionsByAria.length > 0
