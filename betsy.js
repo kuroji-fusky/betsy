@@ -95,20 +95,16 @@ const noNewTabs = () => {
   ]
 
   const removeTargetAttributes = () => {
+    betsyDebug(`noNewTabs: found ${linkMatches} links`)
+
     linkMatches.map((selector) => {
       _$$(selector).forEach((element) => {
         element.removeAttribute("target")
 
-        // For debug purposes and to keep track of links that are overriden
+        // Add data attribute keep track of links that are overriden
         element.setAttribute("data-etsy-target-override", "")
       })
     })
-  }
-
-  const betsyLsKey = "_betsyData"
-  const betsyInit = {
-    init_date: new Date().toISOString(),
-    links_overriden: 0,
   }
 
   // Detect any DOM changes and re-execute the function when fetching listings through Etsy's API
@@ -118,39 +114,6 @@ const noNewTabs = () => {
         removeTargetAttributes()
       }
     })
-
-    const overridesDOM = _$$("[data-etsy-target-override]")
-    const overrideDOMLen = overridesDOM.length
-
-    if (overridesCount == overrideDOMLen) {
-      return
-    }
-
-    overridesCount = overrideDOMLen
-
-    const lsGetItem = localStorage.getItem(betsyLsKey)
-
-    if (!lsGetItem) {
-      localStorage.setItem(betsyLsKey, coerceToString(betsyInit))
-    }
-
-    if (lsGetItem) {
-      const { init_date, links_overriden: lo_temp } = JSON.parse(lsGetItem)
-      localStorage.setItem(
-        betsyLsKey,
-        coerceToString({
-          init_date,
-          links_overriden: lo_temp + overridesCount,
-        })
-      )
-    }
-
-    // prettier-ignore
-    const lsLinkOverriden = JSON.parse(lsGetItem || JSON.stringify(betsyInit)).links_overriden
-
-    betsyDebug(
-      `noNewTabs: stripped ${overridesCount} links, ${lsLinkOverriden} in total`
-    )
   })
 
   observer.observe($body, { childList: true, subtree: true })
