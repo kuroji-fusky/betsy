@@ -86,9 +86,7 @@ appendInlineStyles($body, {
  */
 const noNewTabs = () => {
   betsyFeatures("noNewTabs() init")
-
-  let overridesCount = 0
-
+  
   const linkMatches = [
     `a[target*="etsy"]`,
     `a[href^="https://www.etsy.com/"][target="_blank"]:not([href^="/social"], [href^="https://play.google.com"], [href^="https://apps.apple.com"])`,
