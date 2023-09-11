@@ -87,6 +87,8 @@ appendInlineStyles($body, {
 const noNewTabs = () => {
   betsyFeatures("noNewTabs() init")
 
+  let overridesCount = 0
+
   const linkMatches = [
     `a[target*="etsy"]`,
     `a[href^="https://www.etsy.com/"][target="_blank"]:not([href^="/social"], [href^="https://play.google.com"], [href^="https://apps.apple.com"])`,
@@ -112,7 +114,14 @@ const noNewTabs = () => {
     })
 
     const strippedLinks = _$$("a[data-etsy-target-override]")
-    betsyDebug(`noNewTabs: found ${strippedLinks.length} links`)
+    const strippedLinksLen = strippedLinks.length
+
+    if (overridesCount === strippedLinksLen) {
+      return
+    }
+
+    overridesCount = overridesCount + strippedLinksLen
+    betsyDebug(`noNewTabs: found ${overridesCount} links`)
   })
 
   observer.observe($body, { childList: true, subtree: true })
