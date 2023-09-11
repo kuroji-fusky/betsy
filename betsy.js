@@ -86,15 +86,13 @@ appendInlineStyles($body, {
  */
 const noNewTabs = () => {
   betsyFeatures("noNewTabs() init")
-  
+
   const linkMatches = [
     `a[target*="etsy"]`,
     `a[href^="https://www.etsy.com/"][target="_blank"]:not([href^="/social"], [href^="https://play.google.com"], [href^="https://apps.apple.com"])`,
   ]
 
   const removeTargetAttributes = () => {
-    betsyDebug(`noNewTabs: found ${linkMatches} links`)
-
     linkMatches.map((selector) => {
       _$$(selector).forEach((element) => {
         element.removeAttribute("target")
@@ -112,6 +110,9 @@ const noNewTabs = () => {
         removeTargetAttributes()
       }
     })
+
+    const strippedLinks = _$$("a[data-etsy-target-override]")
+    betsyDebug(`noNewTabs: found ${strippedLinks.length} links`)
   })
 
   observer.observe($body, { childList: true, subtree: true })
