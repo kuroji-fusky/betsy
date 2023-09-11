@@ -84,10 +84,10 @@ appendInlineStyles($body, {
  * @description Removes the `target="_blank"` attribute from links that causes to open link to a new tab
  * ======================================================================================================================
  */
+let overridesCount = 0
+
 const noNewTabs = () => {
   betsyFeatures("noNewTabs() init")
-
-  let overridesCount = 0
 
   const linkMatches = [
     `a[target*="etsy"]`,
@@ -113,14 +113,13 @@ const noNewTabs = () => {
       }
     })
 
-    const strippedLinks = _$$("a[data-etsy-target-override]")
-    const strippedLinksLen = strippedLinks.length
+    const strippedLinksLen = _$$("a[data-etsy-target-override]").length
 
     if (overridesCount === strippedLinksLen) {
       return
     }
 
-    overridesCount = overridesCount + strippedLinksLen
+    overridesCount = strippedLinksLen
     betsyDebug(`noNewTabs: found ${overridesCount} links`)
   })
 
