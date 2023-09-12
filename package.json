@@ -1,0 +1,12 @@
+{
+  "name": "betsy",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": "https://github.com/kuroji-fusky/betsy.git",
+  "author": "Kerby Keith Aquino <skepfoosky15@gmail.com>",
+  "license": "MIT",
+  "devDependencies": {
+    "parcel": "^2.9.3",
+    "typescript": "^5.2.2"
+  }
+}
