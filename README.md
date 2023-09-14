@@ -1,6 +1,6 @@
 # BEtsy (Better Etsy)
 
-The BEtsy or Better Etsy is a browser extension for Chrome and Firefox that extends optional functionality for Etsy
+The __BEtsy__ or __Better Etsy__ is a browser extension for Chrome and Firefox that extends optional functionality for Etsy
 
 ## Features
 
@@ -11,8 +11,8 @@ The BEtsy or Better Etsy is a browser extension for Chrome and Firefox that exte
 - 🚧 Override default currency setting set
 - 🚧 Remove tracking (off by default)
 - 🚧 Show a popup title of a listing on the homepage
-- 🚧 Auto-redirect sold out listings
-- 🚧 Remove fade-in transitions from the listing gallery
+- 🚧 Auto-redirect sold out or "taking a short break" listings
+- 🚧 Remove fade-in transitions from a listing gallery
 
 ## License
 
