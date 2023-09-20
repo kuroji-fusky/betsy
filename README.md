@@ -14,8 +14,9 @@ The **BEtsy** or **Better Etsy** is a browser extension for Chrome/Brave and Fir
 | 🚧  | Remove tracking (off by default)                                                                           | Miscellaneous |
 | 🚧  | Auto-redirect sold out or "taking a short break" listings                                                  | Behavior      |
 | 🚧  | Show a popup title of a listing on the homepage                                                            | UI            |
-| 🚧  | Fade-out sold listings                                                                                     | UI            |
+| 🚧  | Make sold listings transparent                                                                             | UI            |
 | 🚧  | Remove fade-in transitions from a listing gallery                                                          | UI            |
+| 🚧  | Hide specific listings                                                                                     | UI/Behavior   |
 
 ## License
 
