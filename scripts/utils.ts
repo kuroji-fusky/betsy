@@ -17,10 +17,11 @@ export const betsyDebug = (...i: any[]) =>
     i
   )
 
+export const $head = document.head
 export const $body = document.body
-export const _$ = (
+export const _$ = <E extends Element>(
   element: keyof HTMLElementTagNameMap | string,
-  target = document
+  target: E | (Document & Document) = document
 ) => {
   return target.querySelector(element)
 }
@@ -43,4 +44,17 @@ export const appendInlineStyles = (
   return Object.entries(styles).forEach(([styleKey, styleValue]) => {
     target.style[styleKey] = styleValue
   })
+}
+
+export const betsyStyleInject = (label: string, styles: string) => {
+  // Error handling
+  if (!label) throw new Error("A label is required")
+  if (!styles) throw new Error("Can't parse CSS from an empty string")
+
+  const styleElement = document.createElement("style")
+
+  styleElement.setAttribute("data-betsy-ext-inject", label)
+  styleElement.textContent = styles
+
+  return styleElement
 }

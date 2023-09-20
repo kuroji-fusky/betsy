@@ -41,7 +41,7 @@ const expandListingDetails = () => {
 
       readMoreButton!.click()
       betsyDebug(
-        `expandListingDetails: ${appearsComponentName} has been expanded (⚡ click event called)`
+        `expandListingDetails: ${appearsComponentName} has been expanded (click event called)`
       )
     }
   })
